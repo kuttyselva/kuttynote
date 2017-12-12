@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">kutty note</string>
+    <string name="take_free_style_notes">Take free style notes</string>
+    <string name="save">Save</string>
+    <string name="clear">clear</string>
+</resources>
