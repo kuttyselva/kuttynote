@@ -13,11 +13,13 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
@@ -34,15 +36,20 @@ public class MainActivity extends AppCompatActivity {
     private SignaturePad mSignaturePad;
     private Button mClearButton;
     private Button mSaveButton;
+    public Button button;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mSignaturePad = (SignaturePad)findViewById(R.id.sigpad);
+        button=(Button)findViewById(R.id.button);
+
+        mSignaturePad = (SignaturePad) findViewById(R.id.sigpad);
         mSignaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
             @Override
             public void onStartSigning() {
-                Toast.makeText(MainActivity.this, "OnStartSigning", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -58,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mClearButton = (Button)findViewById(R.id.clear);
-        mSaveButton = (Button)findViewById(R.id.save);
+
+        mClearButton = (Button) findViewById(R.id.clear);
+        mSaveButton = (Button) findViewById(R.id.save);
 
         mClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,16 +80,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bitmap signatureBitmap = mSignaturePad.getSignatureBitmap();
+
                 if (addJpgSignatureToGallery(signatureBitmap)) {
                     Toast.makeText(MainActivity.this, "Signature saved into the Gallery", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MainActivity.this, "Unable to store the signature", Toast.LENGTH_SHORT).show();
                 }
-                if (addSvgSignatureToGallery(mSignaturePad.getSignatureSvg())) {
-                    Toast.makeText(MainActivity.this, "SVG Signature saved into the Gallery", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Unable to store the SVG signature", Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
 
@@ -124,10 +129,22 @@ public class MainActivity extends AppCompatActivity {
     public boolean addJpgSignatureToGallery(Bitmap signature) {
         boolean result = false;
         try {
-            File photo = new File(getAlbumStorageDir("SignaturePad"), String.format("Signature_%d.jpg", System.currentTimeMillis()));
+            final File photo = new File(getAlbumStorageDir("SignaturePad"), String.format("Signature_%d.jpg", System.currentTimeMillis()));
             saveBitmapToJPG(signature, photo);
             scanMediaFile(photo);
             result = true;
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("image/jpg");
+
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(photo));
+                    startActivity(Intent.createChooser(shareIntent, "Share image using"));
+
+                }
+            });
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -144,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean addSvgSignatureToGallery(String signatureSvg) {
         boolean result = false;
         try {
-            File svgFile = new File(getAlbumStorageDir("SignaturePad"), String.format("Signature_%d.svg", System.currentTimeMillis()));
+           final File svgFile = new File(getAlbumStorageDir("SignaturePad"), String.format("Signature_%d.svg", System.currentTimeMillis()));
             OutputStream stream = new FileOutputStream(svgFile);
             OutputStreamWriter writer = new OutputStreamWriter(stream);
             writer.write(signatureSvg);
@@ -171,5 +188,6 @@ public class MainActivity extends AppCompatActivity {
                     REQUEST_EXTERNAL_STORAGE
             );
         }
+
     }
 }
