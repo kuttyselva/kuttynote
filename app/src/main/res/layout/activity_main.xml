@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.kuttyselva.handnote.MainActivity">
@@ -30,7 +31,6 @@
         android:layout_marginBottom="33dp"
         android:layout_marginEnd="143dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="1dp"
         android:background="@android:color/holo_purple"
         android:enabled="false"
         android:fontFamily="casual"
@@ -41,8 +41,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/save"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sigpad" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/save"
@@ -52,13 +51,13 @@
         android:layout_marginBottom="33dp"
         android:layout_marginEnd="33dp"
         android:background="@android:color/holo_green_dark"
+        android:enabled="false"
         android:fontFamily="casual"
         android:text="@string/save"
         android:textAllCaps="false"
         android:textColor="#ffffff"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -69,13 +68,11 @@
         android:layout_marginBottom="7dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:backgroundTint="@android:color/background_light"
         app:layout_constraintBottom_toTopOf="@+id/clear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.957" tools:targetApi="lollipop"/>
+        tools:targetApi="lollipop" />
 
     <Button
         android:id="@+id/button"
@@ -84,6 +81,7 @@
         android:layout_marginBottom="26dp"
         android:layout_marginEnd="37dp"
         android:layout_marginStart="39dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/round"
         android:fontFamily="casual"
         android:text="@string/share"
@@ -91,6 +89,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/save"
-        app:layout_constraintStart_toEndOf="@+id/clear" />
+        app:layout_constraintStart_toEndOf="@+id/clear"
+        app:layout_constraintTop_toBottomOf="@+id/sigpad" />
 
 </android.support.constraint.ConstraintLayout>
